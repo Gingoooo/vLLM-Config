@@ -1,0 +1,21 @@
+
+version: '3.8'
+
+services:
+  locallm:
+    image: locallm:v1
+    runtime: nvidia
+    environment:
+      TRANSFORMERS_OFFLINE: "1"
+      HF_DATASET_OFFLINE: "1"
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        reservations:
+         devices:
+           - driver: nvidia
+             capabilities: [gpu]
+             device_ids: ['0']
+    ipc: host
+    command: --max-model-len=16384 --gpu-memory-utilization=0.25 --model="/mnt/model/[model_name]" --max-num-seqs=30
