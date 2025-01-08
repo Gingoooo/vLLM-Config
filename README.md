@@ -24,3 +24,58 @@ A local environment setup framework designed for configuring and managing large 
 ├── docker-compose.yml      # 啟用參數設定
 └── README.md               # 說明文件
 ```
+
+
+## 安裝與使用
+
+### 1. 請按照以下步驟來啟動此專案
+
+```bash
+git clone https://github.com/Gingoooo/vLLM-Config.git
+cd vLLM-Config
+```
+
+### 2. 構建 Docker 映像檔
+
+```bash
+docker-compose build --no-cache
+```
+
+### 3. 啟動服務
+```bash
+docker-compose up -d
+```
+
+### 4. 測試
+```python
+import requests
+import json
+
+url = "http://localhost:8000/v1/chat/completions"
+
+payload = json.dumps({
+  "model": "/mnt/model/[model_name]",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant."
+    },
+    {
+      "role": "user",
+      "content": "Hello"
+    }
+  ],
+  "stream": False,
+  "temperature": 0
+})
+headers = {
+  'Content-Type': 'application/json'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+
+
